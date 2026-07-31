@@ -1,0 +1,7 @@
+https://leetcode.com/problems/customers-who-never-order/submissions/2076639640/
+
+# Write your MySQL query statement below
+SELECT NAME AS Customers FROM CUSTOMERS
+WHERE ID NOT IN (
+    SELECT CUSTOMERID FROM Orders
+)
