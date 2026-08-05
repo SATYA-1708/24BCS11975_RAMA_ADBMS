@@ -1,0 +1,8 @@
+https://www.codechef.com/learn/course/sql-intermediate/SQ00BS09/problems/GSQ85D?tab=statement
+ 
+select 
+round(
+(sum(case when cuisine='American' then price else 0 end)*100)/
+sum(price)
+,2) as American_Revenue
+from orders
