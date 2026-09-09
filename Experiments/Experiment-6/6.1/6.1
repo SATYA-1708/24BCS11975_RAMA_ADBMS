@@ -1,0 +1,39 @@
+Create a complex view named Unsold_Items that joins the Products and Order_Details tables to
+display the ProductName and Category of all items that have never been ordered by any customer using a NOT IN Operator
+
+
+CREATE TABLE Products (
+    Productid INT PRIMARY KEY,
+    ProductName VARCHAR(100) NOT NULL,
+	Category VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Order_Details (
+	OrderId VARCHAR(100) Primary KEY,
+    Productid INT NOT NULL,
+    CustomerName VARCHAR(100) NOT NULL
+
+);
+
+Insert into Products Values
+(1,'Item1','First'),
+(2,'Item2','First'),
+(3,'Item3','Second'),
+(4,'Item4','Third'),
+(5,'Item5','Fourth')
+
+Insert into Order_Details Values
+(1,1,'User1'),
+(2,1,'User3'),
+(3,2,'User2')
+;
+
+CREATE VIEW Unsold_Items AS
+SELECT ProductName, Category
+FROM Products
+WHERE ProductID NOT IN (
+    SELECT ProductID
+    FROM Order_Details
+);
+
+Select * from Unsold_Items;
