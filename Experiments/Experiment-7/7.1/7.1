@@ -1,0 +1,63 @@
+Implement a PL/SQL block with a cursor to fetch and display the Name and Salary of the
+top 5 highest-paid employees from the Staff table.
+
+
+CREATE TABLE Staff (
+    Staff_ID    NUMBER(5) PRIMARY KEY,
+    Name        VARCHAR2(50) NOT NULL,
+    Salary      NUMBER(10,2),
+    Department  VARCHAR2(30),
+    Job_Title   VARCHAR2(30)
+);
+
+
+INSERT INTO Staff VALUES (101, 'Aarav', 45000, 'IT', 'Developer');
+INSERT INTO Staff VALUES (102, 'Priya', 75000, 'HR', 'Manager');
+INSERT INTO Staff VALUES (103, 'Rahul', 55000, 'IT', 'Developer');
+INSERT INTO Staff VALUES (104, 'Simran', 90000, 'Finance', 'Manager');
+INSERT INTO Staff VALUES (105, 'Arjun', 65000, 'IT', 'Team Lead');
+INSERT INTO Staff VALUES (106, 'Neha', 50000, 'HR', 'Executive');
+INSERT INTO Staff VALUES (107, 'Karan', 85000, 'Finance', 'Analyst');
+INSERT INTO Staff VALUES (108, 'Isha', 40000, 'Marketing', 'Executive');
+INSERT INTO Staff VALUES (109, 'Rohan', 70000, 'IT', 'Developer');
+INSERT INTO Staff VALUES (110, 'Ananya', 60000, 'Marketing', 'Manager');
+
+COMMIT;
+
+
+SELECT * FROM Staff;
+
+
+DECLARE
+
+    CURSOR top_5_employees IS
+        SELECT Name, Salary
+        FROM Staff
+        ORDER BY Salary DESC
+        FETCH FIRST 5 ROWS ONLY;
+
+    v_name   Staff.Name%TYPE;
+    v_salary Staff.Salary%TYPE;
+
+BEGIN
+
+    OPEN top_5_employees;
+
+    LOOP
+
+        FETCH top_5_employees
+        INTO v_name, v_salary;
+
+        EXIT WHEN top_5_employees%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Name: ' || v_name ||
+            ' | Salary: ' || v_salary
+        );
+
+    END LOOP;
+
+    CLOSE top_5_employees;
+
+END;
+/
