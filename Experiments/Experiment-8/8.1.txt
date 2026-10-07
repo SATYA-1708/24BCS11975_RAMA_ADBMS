@@ -1,0 +1,54 @@
+**Write a PostgreSQL stored procedure `Insert_Employee` that accepts the following parameters as arguments:**
+
+* `EMP_ID`
+* `EMP_NAME`
+* `SALARY`
+* `DEPARTMENT_NAME`
+
+The procedure should insert the employee details into the `Employee` table **only if the `EMP_ID` is an odd number**.
+
+If the user attempts to insert an employee with an **even `EMP_ID`**, the procedure must **raise an exception** with the message:
+
+> **"Even EMP_ID is not allowed. Only odd EMP_ID is allowed."**
+
+**Requirements:**
+
+1. Create an `Employee` table with appropriate columns.
+2. Create the `Insert_Employee` procedure using `PL/pgSQL`.
+3. Use a conditional statement to check whether `EMP_ID` is odd or even.
+4. Use `RAISE EXCEPTION` for an even `EMP_ID`.
+5. Insert the record into the table only when the `EMP_ID` is odd.
+6. Display a success message after successful insertion.
+
+CREATE TABLE Employee (
+    EMP_ID INT PRIMARY KEY,
+    EMP_NAME VARCHAR(100),
+    SALARY NUMERIC(10,2),
+    DEPARTMENT_NAME VARCHAR(100)
+);
+
+CREATE OR REPLACE PROCEDURE Insert_Employee(
+    EMP_ID INT,
+    EMP_NAME VARCHAR(100),
+    SALARY NUMERIC(10,2),
+    DEPARTMENT_NAME VARCHAR(100)
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF EMP_ID % 2 = 0 THEN
+        RAISE EXCEPTION 'Even EMP_ID is not allowed. Only odd EMP_ID is allowed.';
+    ELSE
+        INSERT INTO Employee (EMP_ID, EMP_NAME, SALARY, DEPARTMENT_NAME)
+        VALUES (EMP_ID, EMP_NAME, SALARY, DEPARTMENT_NAME);
+
+        RAISE NOTICE 'Employee inserted successfully.';
+    END IF;
+END;
+$$;
+
+CALL Insert_Employee(101, 'Sameer', 50000, 'IT');
+
+CALL Insert_Employee(102, 'Rahul', 45000, 'HR');
+
+SELECT * FROM Employee;
